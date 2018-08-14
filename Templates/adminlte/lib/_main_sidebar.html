@@ -1,0 +1,13 @@
+{% extends 'adminlte/lib/_main_sidebar.html' %}
+{% block nav_links %}
+    <li>
+        <a href="{% url 'base-connection' %}">
+            <i class="fa fa-database"></i> <span>Bases de datos</span>
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <i class="fa fa-user"></i> <span>Servicios</span>
+        </a>
+    </li>
+{% endblock nav_links %}
