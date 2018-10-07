@@ -6,7 +6,7 @@ from .models import Service, Location, MissingItem, Office, SQLQuery
 def pagina_inicio(request):
     return render(request, 'base.html')
 
-'''def nuevo_servicio(request):
+def nuevo_servicio(request):
     if request.method == 'POST':
         form = ServicioForm(request.POST)
         if form.is_valid():
@@ -30,4 +30,3 @@ def nueva_consulta(request, pk):
     else: 
         form = ConsultaForm()
         return render(request, 'base.html', {'form':form, 'id':pk})
-'''

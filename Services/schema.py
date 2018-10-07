@@ -24,72 +24,108 @@ class SQLQueryType(DjangoObjectType):
 
 
 class Query(graphene.AbstractType):
-    all_services = graphene.List(ServiceType)
-    all_locations = graphene.List(LocationType)
-    all_items = graphene.List(MissingItemType)
-    all_offices = graphene.List(OfficeType)
-    all_querys = graphene.List(SQLQueryType)
+    all_services = graphene.List(ServiceType,kind=graphene.String())
+    all_locations = graphene.List(LocationType,id=graphene.Int())
+    all_items = graphene.List(MissingItemType,id=graphene.Int())
+    all_offices = graphene.List(OfficeType,id=graphene.Int())
+    all_querys = graphene.List(SQLQueryType,id=graphene.Int())
     service = graphene.Field(ServiceType,id=graphene.Int())
     location = graphene.Field(LocationType,id=graphene.Int())
     item = graphene.Field(MissingItemType,id=graphene.Int())
     office = graphene.Field(OfficeType,id=graphene.Int())
     query = graphene.Field(SQLQueryType,id=graphene.Int())
 
-    def resolve_all_services(self, args):
+    def resolve_all_services(self, info, **kwargs):
+        kind = kwargs.get('kind')
+        if kind is not None:
+            return Service.objects.all().filter(kind=kind)
+        
         return Service.objects.all()
 
-    def resolve_all_locations(self, args):
-        return Service.objects.all()
+    def resolve_all_locations(self, info, **kwargs):
+        id = kwargs.get('id')
+        source = None
 
-    def resolve_all_items(self, args):
-        return Service.objects.all()
+        if id is not None:
+            source = Service.objects.get(pk=id)
 
-    def resolve_all_offices(self, args):
+        if source is not None:
+            return Location.objects.all().filter(Service=source)
+
+        return Location.objects.all()
+
+    def resolve_all_items(self, info, **kwargs):
+        id = kwargs.get('id')
+        source = None
+
+        if id is not None:
+            source = Service.objects.get(pk=id)
+
+        if source is not None:
+            return MissingItem.objects.all().filter(Service=source)
+
+        return MissingItem.objects.all()
+
+    def resolve_all_offices(self, info, **kwargs):
+        id = kwargs.get('id')
+        source = None
+
+        if id is not None:
+            source = Service.objects.get(pk=id)
+
+        if source is not None:
+            return Office.objects.all().filter(Service=source)
+
         return Office.objects.all()
 
-    def resolve_all_querys(self, args):
-        return Service.objects.all()
+    def resolve_all_querys(self, info, **kwargs):
+        id = kwargs.get('id')
+        source = None
 
-    def resolve_service(self, args):
-        id = args.get('id')
+        if id is not None:
+            source = Service.objects.get(pk=id)
+
+        if source is not None:
+            return SQLQuery.objects.all().filter(Service=source)
+
+        return SQLQuery.objects.all()
+
+    def resolve_service(self, info, **kwargs):
+        id = kwargs.get('id')
 
         if id is not None:
             return Service.objects.get(pk=id)
 
         return None
 
-    def resolve_location(self, args, context, info):
-        id = args.get('id')
-        source = Service.objects.get(pk=id)
+    def resolve_location(self, info, **kwargs):
+        id = kwargs.get('id')
 
-        if source is not None:
-            return Location.objects.get(Service=source)
-
-        return None
-
-    def resolve_item(self, args, context, info):
-        id = args.get('id')
-        source = Service.objects.get(pk=id)
-
-        if source is not None:
-            return MissingItem.objects.get(Service=source)
+        if id is not None:
+            return Location.objects.get(pk=id)
 
         return None
 
-    def resolve_office(self, args, context, info):
-        id = args.get('id')
-        source = Service.objects.get(pk=id)
+    def resolve_item(self, info, **kwargs):
+        id = kwargs.get('id')
 
-        if source is not None:
-            return Office.objects.get(Service=source)
+        if id is not None:
+            return MissingItem.objects.get(pk=id)
 
         return None
 
-    def resolve_query(self, args, context, info):
-        id = args.get('id')
-        source = Service.objects.get(pk=id)
+    def resolve_office(self, info, **kwargs):
+        id = kwargs.get('id')
 
-        if source is not None:
-            return SQLQuery.objects.get(Service=source)
+        if id is not None:
+            return Office.objects.get(pk=id)
+
+        return None
+
+    def resolve_query(self, info, **kwargs):
+        id = kwargs.get('id')
+
+        if id is not None:
+            return SQLQuery.objects.get(pk=id)
 
         return None
