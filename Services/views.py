@@ -1,32 +1,27 @@
 from django.shortcuts import render
+from django.views.generic import CreateView, DeleteView, UpdateView, ListView, DetailView
+from django.urls import reverse_lazy
 from .models import Service, Location, MissingItem, Office, SQLQuery
-#from .forms import ServicioForm, ConsultaForm
+from .forms import ServiceForm
 
 
-def pagina_inicio(request):
-    return render(request, 'base.html')
+def base_service(request):
+    return render(request, "Services/base.html")
 
-def nuevo_servicio(request):
-    if request.method == 'POST':
-        form = ServicioForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
-            return render(request, 'base.html')
+class ServicesCreateView(CreateView):
+    model = Service
+    form_class = ServiceForm
+    template_name = "Services/service_form.html"
 
-    else: 
-        form = ServicioForm()
-        return render(request, 'base.html', {'form':form, 'numero':21})
+class ServicesListView(ListView):
+    model = Service
+    template_name = "Services/service_list.html"
 
-def nueva_consulta(request, pk):
-    if request.method == 'POST':
-        form = ConsultaForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.Servicio = Servicio.objects.get(id=pk)
-            post.save()
-            return render(request, 'base.html')
+class ServicesUpdateView(UpdateView):
+    model = Service
+    form_class = ServiceForm
+    template_name = "Services/service_form.html"
 
-    else: 
-        form = ConsultaForm()
-        return render(request, 'base.html', {'form':form, 'id':pk})
+class ServicesDeleteView(DeleteView):
+    model = Service
+    success_url = reverse_lazy('list-services')

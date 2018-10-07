@@ -1,0 +1,47 @@
+{% extends 'Services/base.html' %} {% load static %} {% block content %}
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Lista de servicios</h3><br>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Permisos</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if object_list %} {% for service in object_list %}
+            <tr>
+                <td>
+                    {{ service.name }}
+                </td>
+                <td>
+                    {{ service.kind }}
+                </td>
+                <td>
+                    {{ service.permits }}
+                </td>
+                <td>
+                    {{ service.state }}
+                </td>
+                <td>
+                    <a type="button" class="btn btn-primary" href="{% url 'edit-service' service.id %}"> <!---->
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar
+                    </a> 
+
+                    <button type="button" class="btn btn-danger" href="{% url 'delete-service' service.id %}"> <!---->
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Eliminar
+                    </button>
+                </td>
+            </tr>
+            {% endfor %} {% else %}
+            <h1>No hay servicios</h1>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
