@@ -3,6 +3,9 @@
     <div class="box-header with-border">
         <h3 class="box-title">Lista de servicios</h3><br>
     </div>
+    <a type="button" class="btn btn-primary" href="{% url 'service-create' %}"> <!---->
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar
+    </a> 
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -29,11 +32,30 @@
                     {{ service.state }}
                 </td>
                 <td>
-                    <a type="button" class="btn btn-primary" href="{% url 'edit-service' service.id %}"> <!---->
+                    <a type="button" class="btn btn-primary" href="{% url 'service-edit' service.id %}"> <!---->
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar
                     </a> 
-
-                    <button type="button" class="btn btn-danger" href="{% url 'delete-service' service.id %}"> <!---->
+                    {% if service.kind == 'item' %}
+                    <a type="button" class="btn btn-primary" href="{% url 'item-configure' service.id %}"> <!---->
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Configurar
+                    </a> 
+                    {% endif %}
+                    {% if service.kind == 'sqlquery' %}
+                    <a type="button" class="btn btn-primary" href="{% url 'query-configure' service.id %}"> 
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Configurar
+                    </a> 
+                    {% endif %}
+                    {% if service.kind == 'localization' %}
+                    <a type="button" class="btn btn-primary" href="{% url 'location-configure' service.id %}"> 
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Configurar
+                    </a> 
+                    {% endif %}
+                    {% if service.kind == 'directory' %}
+                    <a type="button" class="btn btn-primary" href="{% url 'office-configure' service.id %}"> 
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Configurar
+                    </a> 
+                    {% endif %}
+                    <button type="button" class="btn btn-danger" href="{% url 'service-delete' service.id %}"> 
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Eliminar
                     </button>
                 </td>

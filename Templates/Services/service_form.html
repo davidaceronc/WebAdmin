@@ -1,15 +1,18 @@
 {% extends 'Services/base.html' %} {% load static %} {% block content %}
 <div class="box box-info">
+    <a type="button" class="btn btn-default" href="{% url 'service-list' %}"> <!---->
+        <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span> Atras
+    </a> 
     <div class="box-header with-border">
-        <h3 class="box-title">Nuevo Servicio</h3>
+        <h3 class="box-title">Servicio</h3>
     </div>
     <div class="box-body">
         <div id "div_form">
             <table class="table">
-                {% if form.service_name.errors %}
-                <div id="alert_error_service_name" class="alert alert-warning">
+                {% if form.name.errors %}
+                <div id="alert_error_name" class="alert alert-warning">
                     <button type="button" class="close" data-dismiss="alert">x</button>
-                    <strong>{{ form.service_name.errors }}</strong>
+                    <strong>{{ form.name.errors }}</strong>
                 </div>
                 {% endif %}
                 <form method="post" id="form_service">

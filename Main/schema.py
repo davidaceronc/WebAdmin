@@ -6,7 +6,6 @@ class ConfigurationType(DjangoObjectType):
     class Meta:
         model = Configuration
 
-
 class Query(graphene.AbstractType):
     all_configurations = graphene.List(ConfigurationType)
     configuration = graphene.Field(ConfigurationType,id=graphene.Int())
